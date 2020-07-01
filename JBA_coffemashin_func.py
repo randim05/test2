@@ -1,14 +1,3 @@
-# Write your code here
-# input
-# print("Write how many ml of water the coffee machine has:")
-# water = int(input("> "))
-# print("Write how many ml of milk the coffee machine has:")
-# milk = int(input("> "))
-# print("Write how many grams of coffee beans the coffee machine has:")
-# cof = int(input("> "))
-# print("Write how many cups of coffee you will need:")
-# cups = int(input("> "))
-
 water = 400
 milk = 540
 cof = 120
@@ -16,96 +5,129 @@ d_cups = 9
 money = 550
 
 espresso = 1
-water_for_espresso = 250
-milk_for_espresso = 0
-cof_for_espresso = 16
-espresso_costs = 4
+water_e = 250
+milk_e = 0
+cof_e = 16
+money_e = 4
 
 latte = 2
-water_for_latte = 350
-milk_for_latte = 75
-cof_for_latte = 20
-latte_costs = 7
+water_l = 350
+milk_l = 75
+cof_l = 20
+money_l = 7
 
 cappuccino = 3
-water_for_cappuccino = 200
-milk_for_cappuccino = 100
-cof_for_cappuccino = 12
-cappuccino_costs = 6
+water_c = 200
+milk_c = 100
+cof_c = 12
+money_c = 6
 
 
-def out_has():
-    print()
+def buy(x):  # продать
+    global water, milk, cof, d_cups, money
+    x = int(x)
+    if x == 1:
+        if water < water_e:
+            print("Sorry, not enough water!")
+        elif milk < milk_e:
+            print("Sorry, not enough milk!")
+        elif cof < cof_e:
+            print("Sorry, not enough coffee beans!")
+        elif d_cups == 0:
+            print("Sorry, not enough disposable cups!")
+        else:
+            print("I have enough resources, making you a coffee!")
+            water -= water_e
+            milk -= milk_e
+            cof -= cof_e
+            d_cups -= 1
+            money += money_e
+    elif x == 2:
+        if water < water_l:
+            print("Sorry, not enough water!")
+        elif milk < milk_l:
+            print("Sorry, not enough milk!")
+        elif cof < cof_l:
+            print("Sorry, not enough coffee beans!")
+        elif d_cups == 0:
+            print("Sorry, not enough disposable cups!")
+        else:
+            print("I have enough resources, making you a coffee!")
+            water -= water_l
+            milk -= milk_l
+            cof -= cof_l
+            d_cups -= 1
+            money += money_l
+    elif x == 3:
+        if water < water_c:
+            print("Sorry, not enough water!")
+        elif milk < milk_c:
+            print("Sorry, not enough milk!")
+        elif cof < cof_c:
+            print("Sorry, not enough coffee beans!")
+        elif d_cups == 0:
+            print("Sorry, not enough disposable cups!")
+        else:
+            print("I have enough resources, making you a coffee!")
+            print()
+            water -= water_c
+            milk -= milk_c
+            cof -= cof_c
+            d_cups -= 1
+            money += money_c
+
+    # take()
+
+
+def fill():   # напонить
+    global water, milk, cof, d_cups
+    print("Write how many ml of water do you want to add:")
+    water += int(input())
+    print("Write how many ml of milk do you want to add:")
+    milk += int(input())
+    print("Write how many grams of coffee beans do you want to add:")
+    cof += int(input())
+    print("Write how many disposable cups of coffee do you want to add:")
+    d_cups += int(input())
+
+
+def take():  # отдать все деньги
+    global money
+    print("I gave you $" + str(money))
+    money = 0
+
+
+# def work():
+action = "c"
+
+
+def remaining():  # состояние
     print("The coffee machine has:")
     print(str(water) + " of water")
     print(str(milk) + " of milk")
     print(str(cof) + " of coffee beans")
     print(str(d_cups) + " of disposable cups")
     print(str(money) + " of money")
+    print()
 
 
-def buy():
-    print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino:")
-    x = int(input())
-    global water
-    global milk
-    global cof
-    global d_cups
-    global money
-    out_has()
-    if x == 1:
-        water = water - water_for_espresso
-        milk = milk - milk_for_espresso
-        cof = cof - cof_for_espresso
-        d_cups = d_cups - 1
-        money = money + espresso_costs
-
-    if x == 2:
-        water = water - water_for_latte
-        milk = milk - milk_for_latte
-        cof = cof - cof_for_latte
-        d_cups = d_cups - 1
-        money = money + latte_costs
-
-    if x == 3:
-        water = water - water_for_cappuccino
-        milk = milk - milk_for_cappuccino
-        cof = cof - cof_for_cappuccino
-        d_cups = d_cups - 1
-        money = money + cappuccino_costs
-    out_has()
+while action != "exit":
+    print("Write action (buy, fill, take, remaining, exit):")
+    action = input()
+    print()
+    if action == "buy":
+        print("What do you want to buy? 1 - espresso, 2 - latte, 3 - cappuccino"
+              ", back - to main menu:")
+        d = input()
+        if d == 'back':
+            continue
+        else:
+            buy(d)
+    elif action == "remaining":
+        remaining()
+    elif action == "fill":
+        fill()
+    elif action == "take":
+        take()
 
 
-def fill():
-    global water
-    global milk
-    global cof
-    global d_cups
-    out_has()
-    print("Write how many ml of water do you want to add:")
-    water = water + int(input())
-    print("Write how many ml of milk do you want to add:")
-    milk = milk + int(input())
-    print("Write how many grams of coffee beans do you want to add:")
-    cof = cof + int(input())
-    print("Write how many disposable cups of coffee do you want to add:")
-    d_cups = d_cups + int(input())
-    out_has()
-
-
-def take():
-    global money
-    out_has()
-    print("I gave you $" + str(money))
-    money = 0
-    out_has()
-
-
-print("Write action (buy, fill, take):")
-action = input()
-if action == "buy":
-    buy()
-elif action == "fill":
-    fill()
-elif action == "take":
-    take()

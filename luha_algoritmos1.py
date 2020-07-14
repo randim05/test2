@@ -93,4 +93,21 @@
 #         print("Bye!")
 #         do_some = "exit"
 
-
+# num = "4000009225525182"
+# print(num)
+#
+# def luhn(self, x):
+#     x = [int(i) for i in x]
+#     even = [i * 2 for i in x[-2::-2]]
+#     even = [i - 9 if i > 9 else i for i in even]
+#     odd = [i for i in x[-3::-2]]
+#     s = sum(even) + sum(odd)
+#     if s % 10 == 0:
+#         x = ''.join(map(str, x))
+#         return x
+#     else:
+#         x[-1] = 10 - s % 10
+#         x = ''.join(map(str, x))
+#         return x
+# print(luhn(num))
+import  this

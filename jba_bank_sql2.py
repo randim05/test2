@@ -3,14 +3,14 @@ import random
 import sqlite3
 
 
-conn = sqlite3.connect('card.s3db')
+conn = sqlite3.connect("card.s3db")
 cur = conn.cursor()
 # cur.execute("CREATE DATABASE card")
 # conn.commit()
 # cur.execute("DROP TABLE card")
 # conn.commit()
 cur.execute('''CREATE TABLE IF NOT EXISTS card (
-            id INTEGER,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             number TEXT,
             pin TEXT,
             balance INTEGER DEFAULT 0)''')
@@ -23,23 +23,20 @@ class CreditCard:
         while x:
             temp_card_number = "400000" + "%.10d" % random.randint(0,
                                                                    9999999999)
-            if cur.execute('select number from card where number = %s'
-                               % temp_card_number).fetchone()[0] == temp_card_number:
-                break
-            else:
-                self.number = self.luhn(temp_card_number)
-                self.pin = "%0.4d" % random.randint(0, 9999)  # type str!
-                self.balace = 0
-                print("Your card has been created")
-                print("Your card number:")
-                print(self.number)
-                print("Your card PIN:")
-                print(self.pin)
-                cur.execute("INSERT INTO card VALUES (%d, %s, %s, %d)"
-                            % (int(temp_card_number), self.number,
-                               self.pin, self.balace))
-                conn.commit()
-                x = False
+            # if temp_card_number in cur.execute('select number from card where number = %s' % temp_card_number).fetchall():  #.fetchone()[0] == temp_card_number:
+            #     continue
+            # else:
+            self.number = self.luhn(temp_card_number)
+            self.pin = "%0.4d" % random.randint(0, 9999)  # type str!
+            self.balace = 0
+            print("Your card has been created")
+            print("Your card number:")
+            print(self.number)
+            print("Your card PIN:")
+            print(self.pin)
+            cur.execute("INSERT INTO card (number, pin, balance) VALUES (?, ?, ?)",(self.number, self.pin, self.balace))
+            conn.commit()
+            x = False
 
     def luhn(self, x):
         x = [int(i) for i in x]
@@ -79,14 +76,12 @@ while do_some != 'Exit':
         login_card = input()
         print("Enter your PIN:")
         login_pin = input()
-        cur.execute('select number from card where number = %s'
-                    % login_card)
+        cur.execute('select number from card where number = ?',login_card)
         num_card = cur.fetchone()
         if num_card:
             # ctl = cur.execute('select * from card where number = %s'
             #                   % login_card)
-            cur.execute('select number from card where pin = %s'
-                        % login_pin)
+            cur.execute('select number from card where pin = ?',login_pin)
             num_card_pin = cur.fetchone()
             if num_card == num_card_pin:
                 print("You have successfully logged in!")
@@ -105,22 +100,18 @@ while do_some != 'Exit':
                         u_i = input()
                         if u_i == "1":
                             print("Balance: " + str(
-                                cur.execute('select balance from card where number = %s'
-                                            % login_card).fetchone()[0]))
+                                cur.execute('select balance from card where number = ?',login_card).fetchone()[0]))
                             # continue
                         elif u_i == "2":
                             print("Enter income:")
                             c = int(input())
-                            bal1 = cur.execute('select balance from card where number \
-                                               = %s' % login_card)
+                            bal1 = cur.execute('select balance from card where number = ?',login_card)
                             bal = bal1.fetchone()[0] + c
                             # print(bal1.fetchone()[0])
-                            cur.execute('UPDATE card  SET balance = %d \
-                                        WHERE number = %s' % (bal, login_card))
+                            cur.execute('UPDATE card  SET balance = ? WHERE number = ?',(bal, login_card))
                             conn.commit()
                             print("Income was added!")
-                            # continue
-                            # pass
+
                         elif u_i == "3":
                             print("Transfer")
                             print("Enter card number:")
@@ -128,15 +119,14 @@ while do_some != 'Exit':
                             if luhn_test(cn):
                                 if cn == login_card:
                                     print("You can't transfer money to the same account!")
-                                h = cur.execute("select * from card where number = %s" % cn).fetchone()[0]   # !!!!!!!!!!!
+                                h = cur.execute("select * from card where number = ?",cn).fetchone()[0]   # !!!!!!!!!!!
                                 if h:
                                     print("Enter how much money you want to transfer:")
                                     trans = int(input())
-                                    bal1 = cur.execute('select balance from card where number = %s' % cn).fetchone()[0]
+                                    bal1 = cur.execute('select balance from card where number = ?',cn).fetchone()[0]
                                     if bal1 >= trans:
-                                        x = bal1 - trans
-                                        cur.execute("UPDATE card SET balance = \
-                                                    %s WHERE number = %s" % (x, cn))
+                                        x = int(bal1) - trans
+                                        cur.execute("UPDATE card SET balance = ? WHERE number = ?",(str(x), cn))
                                         conn.commit()
                                         print("Success!")
                                         continue
@@ -149,12 +139,10 @@ while do_some != 'Exit':
                                 print("Probably you made mistake in the card number. Please try again!")
                             # pass
                         elif u_i == "4":
-                            cur.execute("DELETE FROM card WHERE number = %s" % login_card)
+                            cur.execute("DELETE FROM card WHERE number = ?",login_card)
                             conn.commit()
                             print("The account has been closed!")
                             inner_chek = "Exit"
-                            # continue
-                            # pass
                         elif u_i == "5":
                             print("You have successfully logged out!")
                             inner_chek = "Exit"
@@ -171,5 +159,5 @@ while do_some != 'Exit':
         print("Bye!")
         do_some = "Exit"
         conn.commit()
-conn.commit()
+# conn.commit()
 conn.close()

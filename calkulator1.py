@@ -12,8 +12,12 @@ while True:
         print("%.1f" % (x ** y))
     elif s == 'mod':
         if y:
-            if (x % y) < 0 or -0.0:
-                print("%.1f" % ((x % y) * (-1.0)))
+            if x < 0:
+                x *= -1
+                print("%.1f" % x % y)
+            elif y < 0:
+                y *= -1
+                print("%.1f" % x % y)
                 # print("%.1f" % (x % y))
             else:
                 print("%.1f" % (x % y))

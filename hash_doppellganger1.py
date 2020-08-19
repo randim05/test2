@@ -21,7 +21,14 @@ for i in s:
 
 print(res)
 #working var
-hashmap()
+
+#some test
+# object_list = [1, 397, 27468, -95, 1309, 397, -539874, -240767, -95, 397]
+# from collections import Counter
+# counter = Counter(object_list)
+# print(counter)
+
+
 #stert var
 # in_list = len(object_list)
 # out_list = len(set(temp))

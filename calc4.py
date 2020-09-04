@@ -38,24 +38,32 @@ def create_postfix(so):
             temp_list.append(variable_storage[i])
         # Если стек пуст или содержит левую круглую скобку наверху,
         # поместите входящий оператор в стек.
-        elif i in ("+", "-", "/", "*"):
+        elif i in ("+", "-", "//", "*"):
             if len(temp_stack) == 0 or temp_stack[-1] == "(":
                 temp_stack.append(i)
         # Если входящий оператор имеет более высокий приоритет,
         # чем вершина стека, поместите его в стек.
-            if i in ("/", "*") and temp_stack[-1] in ("+", "-"):
+            elif i in ("//", "*") and temp_stack[-1] in ("+", "-"):
                 temp_stack.append(i)
         # Если входящий оператор имеет более низкий или равный приоритет,
         # чем или вверху стека, вытяните стек и добавляйте операторы
         # к результату, пока не увидите оператор с меньшим приоритетом
         # или левую скобку наверху стека; затем добавьте в стек входящий
         # оператор.
-            if (i in ("+", "-") and temp_stack[-1] in ("/", "*"))\
-                    or (i in ("*", "/") and temp_stack[-1] in ("/", "*")):
-                while temp_stack[-1] != "(" or \
-                        i != temp_stack[-1] or \
-                        len(temp_stack) != 0 or \
-                        temp_stack[-1] not in ("+", "-"):
+            # если приоритет ниже
+            elif i in ("+", "-") and temp_stack[-1] in ("//", "*"):
+                # имеет низкий приоритет
+                while len(temp_stack) and temp_stack[-1] != "(":
+                    temp_list.append(temp_stack.pop())
+                temp_stack.append(i)
+
+            # если приоритет равен
+            elif i in ("+", "-") and temp_stack[-1] in ("+", "-"):
+                while len(temp_stack) and temp_stack[-1] != "(":
+                    temp_list.append(temp_stack.pop())
+                temp_stack.append(i)
+            elif i in ("*", "//") and temp_stack[-1] in ("//", "*"):
+                while len(temp_stack) and temp_stack[-1] != "(":
                     temp_list.append(temp_stack.pop())
                 temp_stack.append(i)
         # Если входящий элемент является левой круглой скобкой,
@@ -73,25 +81,27 @@ def create_postfix(so):
         # все операторы к результату
     while temp_stack:
         temp_list.append(temp_stack.pop())
+    run_postfix(temp_list)
 
 
 def run_postfix(so):
+
     temp_stack = []
     temp_list = []
     for i in so:
         if i.isdigit():
             temp_stack.append(i)
-        elif i in ("+", "-", "*", "/"):
+        elif i in ("+", "-", "*", "//"):
             x = temp_stack.pop()
             y = temp_stack.pop()
-            z = eval(x+i+y)
+            z = eval(y+i+x)
             temp_stack.append(str(z))
         # elif i == ")":
         #     while st:
         #         tl.append(st.pop())
     # while st:
     #     tl.append(st.pop())
-    return int(temp_stack[0])
+    print(temp_stack[0])
 
 
 exit_flag = 1
@@ -108,7 +118,7 @@ while exit_flag:
         ui = ui.replace("--","+")
         ui = ui.replace("+-","-")
         ui = ui.replace("-+", "-")
-
+    ui = ui.replace("/", "//")
     if ui.startswith(')'):
         print("Invalid expression")
         continue
@@ -118,7 +128,7 @@ while exit_flag:
     elif ui.endswith("("):
         print("Invalid expression")
         continue
-    elif "**" in ui or "//" in ui:
+    elif "**" in ui or "////" in ui:
         print("Invalid expression")
         continue
     elif ui.isdigit():
@@ -169,5 +179,5 @@ while exit_flag:
         else:
             print("Unknow variable")
     else:
-        print(create_postfix(ui))
+        create_postfix(ui)
 

@@ -17,6 +17,7 @@ def do_postfix(so):
     print(tl)
     run_postfix(tl)
 
+
 def run_postfix(so):
     st = []
     tl = []
@@ -44,7 +45,9 @@ def run_postfix(so):
         #     while st:
         #         tl.append(st.pop())
     # while st:
-    #     tl.append(st.pop())
+    #     tl.append(st.pop()) urt 1lI g --> ==>
+
     return st
+
 
 print(do_postfix(ui))

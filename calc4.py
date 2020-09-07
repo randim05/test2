@@ -85,17 +85,28 @@ def create_postfix(so):
 
 
 def run_postfix(so):
-
-    temp_stack = []
-    temp_list = []
+    st = []
+    tl = []
     for i in so:
         if i.isdigit():
-            temp_stack.append(i)
-        elif i in ("+", "-", "*", "//"):
-            x = temp_stack.pop()
-            y = temp_stack.pop()
-            z = eval(y+i+x)
-            temp_stack.append(str(z))
+            st.append(int(i))
+        elif i in ("+", "-", "*", "/"):
+            x = st[-1]
+            print(x)
+            st = st[:-1]
+            print(st)
+            y = st[-1]
+            print(y)
+            st = st[:-1]
+            print(st)
+            if i == "+":
+                st.append(x+y)
+            elif i == "-":
+                st.append(x-y)
+            elif i == "*":
+                st.append(x*y)
+            elif i == "/":
+                st.append(x//y)
         # elif i == ")":
         #     while st:
         #         tl.append(st.pop())
@@ -181,3 +192,4 @@ while exit_flag:
     else:
         create_postfix(ui)
 
+print(run_postfix(ui))

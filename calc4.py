@@ -11,6 +11,34 @@ def all_isalpha(x):
     return True
 
 
+def ui_in_list(so):
+    temp_ui = []
+    ui_digit = []
+    ui_znaki = []
+    ui_var = []
+    for i in so:
+        if i.isdigit():
+            if len(ui_znaki) != 0:
+                ui_digit.append(''.join(ui_znaki))
+                ui_znaki = []
+            temp_ui.append(i)
+        elif i in ("+", "-", "/", "*"):
+            if len(ui_var) != 0:
+                temp_var_in_storage = ''.join(ui_var)
+                if temp_var_in_storage in variable_storage:
+                    ui_digit.append(variable_storage[temp_var_in_storage])
+                else:
+                    print("Unknow variable")
+            ui_digit.append(''.join(temp_ui))
+            temp_ui = []
+            ui_znaki.append(i)
+        elif i.isalpha():
+            ui_var.append(i)
+
+    ui_digit.append(''.join(temp_ui))
+    return ui_digit
+
+
 def create_postfix(so):
     temp_stack = []
     temp_list = []
@@ -29,6 +57,7 @@ def create_postfix(so):
     #     temp_list.append(temp_stack.pop())
     # res = run_postfix(temp_list)
     # return res
+    so = ui_in_list(so)
     for i in so:
         # Добавляйте операнды (числа и переменные) к
         # результату (постфиксная запись) по мере их поступления.
@@ -118,18 +147,28 @@ def run_postfix(so):
 exit_flag = 1
 
 while exit_flag:
-    try:
-        ui = input()
-    except:
-        print("Invalid assignment")
+    ui = input()
+    # try:
+    #     ui = input()
+    # except:
+    #     print("Invalid assignment")
     while " " in ui or "++" in ui or "--" in ui or "+-" in ui or "-+" in ui:
         ui = ui.replace(" ", '')
-        ui = ui.replace("++","+")
+        ui = ui.replace("++", "+")
         # ui = ui.replace("+++","+")
-        ui = ui.replace("--","+")
-        ui = ui.replace("+-","-")
+        ui = ui.replace("--", "+")
+        ui = ui.replace("+-", "-")
         ui = ui.replace("-+", "-")
     ui = ui.replace("/", "//")
+
+
+
+
+    # try:
+    #     eval(ui)
+    #     ui = input()
+    # except:
+    #     pass
     if ui.startswith(')'):
         print("Invalid expression")
         continue
@@ -184,7 +223,7 @@ while exit_flag:
         elif ss[0].isdigit() and ss[1].isdigit():  # цифра равна цифре
             print("Invalid assignment")
             continue
-    elif ui.isalpha():
+    elif all_isalpha(ui):
         if ui in variable_storage:
             print(variable_storage[ui])
         else:

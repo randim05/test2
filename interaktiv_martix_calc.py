@@ -71,6 +71,7 @@ while user_choice != "0":
             matrix2.append(input().split(' '))
             i += 1
         res_matrix = [[0 for i in range(row2)] for j in range(col1)]
+
         if col1 == row2:
             for i in range(col1):
                 for j in range(row2):

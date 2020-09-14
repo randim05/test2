@@ -4,6 +4,7 @@ while user_choice != "0":
     print('''1. Add matrices
 2. Multiply matrix by a constant
 3. Multiply matrices
+4. Transpose matrix
 0. Exit''')
     if user_choice == "75":
         user_choice = input("Your choice: ")
@@ -122,4 +123,97 @@ while user_choice != "0":
             print(" ".join([str(_) for _ in i]), sep=' ')
     elif user_choice == '0':
         break
+    elif user_choice == '4':
+        print('''1. Main diagonal
+2. Side diagonal
+3. Vertical line
+4. Horizontal line''')
+        user_choice_trans = input("Your choice: ")
+        if user_choice_trans == "1":
+            cr1 = input("Enter matrix size: ").split(' ')
+            row1, col1 = int(cr1[0]), int(cr1[1])
+            matrix1 = []
+            i = 0
+            print("Enter matrix:")
+            while i < row1:
+                matrix1.append(input().split(' '))
+                try:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = int(matrix1[i][j])
+                except ValueError:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = float(matrix1[i][j])
+                i += 1
+            res_matrix = [[0 for i in range(col1)] for j in range(row1)]
 
+            for i in range(row1):
+                for j in range(col1):
+                    res_matrix[i][j] = matrix1[j][i]
+            print("The result is:")
+            for i in res_matrix:
+                print(" ".join([str(_) for _ in i]), sep=' ')
+        elif user_choice_trans == "2":
+            cr1 = input("Enter matrix size: ").split(' ')
+            row1, col1 = int(cr1[0]), int(cr1[1])
+            matrix1 = []
+            i = 0
+            print("Enter matrix:")
+            while i < row1:
+                matrix1.append(input().split(' '))
+                try:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = int(matrix1[i][j])
+                except ValueError:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = float(matrix1[i][j])
+                i += 1
+            res_matrix = [[0 for i in range(col1)] for j in range(row1)]
+            k = row1 - 1
+            for i in range(row1):
+                for j in range(col1):
+                    res_matrix[i][j] = matrix1[k - j][k - i]
+            print("The result is:")
+            for i in res_matrix:
+                print(" ".join([str(_) for _ in i]), sep=' ')
+        elif user_choice_trans == "3":
+            cr1 = input("Enter matrix size: ").split(' ')
+            row1, col1 = int(cr1[0]), int(cr1[1])
+            matrix1 = []
+            i = 0
+            print("Enter matrix:")
+            while i < row1:
+                matrix1.append(input().split(' '))
+                try:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = int(matrix1[i][j])
+                except ValueError:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = float(matrix1[i][j])
+                i += 1
+            res_matrix = []
+            for i in matrix1:
+                i.reverse()
+                res_matrix.append(i)
+            print("The result is:")
+            for i in res_matrix:
+                print(" ".join([str(_) for _ in i]), sep=' ')
+        elif user_choice_trans == "4":
+            cr1 = input("Enter matrix size: ").split(' ')
+            row1, col1 = int(cr1[0]), int(cr1[1])
+            matrix1 = []
+            i = 0
+            print("Enter matrix:")
+            while i < row1:
+                matrix1.append(input().split(' '))
+                try:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = int(matrix1[i][j])
+                except ValueError:
+                    for j in range(len(matrix1[i])):
+                        matrix1[i][j] = float(matrix1[i][j])
+                i += 1
+            matrix1.reverse()
+            res_matrix = matrix1
+            print("The result is:")
+            for i in res_matrix:
+                print(" ".join([str(_) for _ in i]), sep=' ')

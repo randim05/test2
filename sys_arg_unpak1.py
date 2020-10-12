@@ -7,6 +7,7 @@
 import math
 import sys
 # args = ["python", "sys_arg_unpak1.py", "--type=diff", "--principal=500000", "--periods=8", "--interest=7.8"]
+
 args = ["python", "creditcalc.py", "--type=annuity", "--principal=1000000", "--periods=60", "--interest=10"]
 
 arg_dict = {'type': 0, "payment": 0, "principal": 0, "periods": 0, "interest": 0}
